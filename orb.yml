@@ -49,7 +49,7 @@ commands:
                 echo 'Error: NPM appears to not be installed.' >&2
                 exit 1
               fi
-              npm install sfdx-cli@<<parameter.version>> --global
+              npm install sfdx-cli@<<parameters.version>> --global
             name: Install SFDX - NPM
     - run:
         command: sfdx --version

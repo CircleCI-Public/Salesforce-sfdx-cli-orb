@@ -44,7 +44,7 @@ steps:
                 echo 'Error: NPM appears to not be installed.' >&2
                 exit 1
               fi
-              npm install sfdx-cli@<<parameter.version>> --global
+              npm install sfdx-cli@<<parameters.version>> --global
   - run:
       name: Verify SFDX installation
       command: sfdx --version
