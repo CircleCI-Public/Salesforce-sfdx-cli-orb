@@ -25,6 +25,12 @@ jobs:
           defaultdevhubusername: circleciorg
 
 # yaml anchor filters
+prod-deploy_requires: &prod-deploy_requires
+  [
+    install_cli_tar-master,
+    install_cli_npm-master
+  ]
+
 integration-dev_filters: &integration-dev_filters
   branches:
     ignore: /.*/
@@ -36,12 +42,6 @@ integration-master_filters: &integration-master_filters
     ignore: /.*/
   tags:
     only: /master-.*/
-
-prod-deploy_requires: &prod-deploy_requires
-  [
-    install_cli_tar-master,
-    install_cli_npm-master
-  ]
 
 workflows:
   # this `lint-pack_validate_publish-dev` workflow will run on any commit
@@ -94,7 +94,7 @@ workflows:
 
   # this `integration-tests_prod-release` workflow will ignore commits
   # it is only triggered by git tags, which are created in the job above
-  # integration-tests_prod-release:
+  integration-tests_prod-release:
     jobs:
       # - your integration test jobs go here
       # - you will want to call each integration testing job twice,
