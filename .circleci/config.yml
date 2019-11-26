@@ -4,9 +4,31 @@ version: 2.1
 # release must exist; you'll need to publish manually at least once)
 # you can use scripts/publish-alpha.sh to publish a @dev:alpha release
 orbs:
-  salesforce-sfdx: circleci/salesforce-sfdx@dev:alpha
+  sfdx: circleci/salesforce-sfdx@dev:alpha
   orb-tools: circleci/orb-tools@8.27.3
 
+jobs:
+  install_cli_tar:
+    executor: sfdx/default
+    steps:
+      - sfdx/install:
+          instanceUrl: https://circleci--test.cs9.my.salesforce.com
+          defaultusername: circleci
+          defaultdevhubusername: circleciorg
+  install_cli_npm:
+    executor: cimg/base:stable
+    steps:
+      - sfdx/install:
+          cli-version: latest
+          instanceUrl: https://circleci--test.cs9.my.salesforce.com
+          defaultusername: circleci
+          defaultdevhubusername: circleciorg
+
+prod-deploy_requires: &prod-deploy_requires
+  [
+    install_cli_tar-master,
+    install_cli_npm-master
+  ]
 workflows:
   # this `lint-pack_validate_publish-dev` workflow will run on any commit
   lint-pack_validate_publish-dev:
@@ -59,55 +81,72 @@ workflows:
   # this `integration-tests_prod-release` workflow will ignore commits
   # it is only triggered by git tags, which are created in the job above
   # integration-tests_prod-release:
-  #   jobs:
-  #     # - your integration test jobs go here
-  #     # - you will want to call each integration testing job twice,
-  #     # - each under a different name:
-  #     # - once, for integration tests triggered by non-master-branch commits
-  #     # - and again, for tests triggered by commits to master
-  #     # - only commits to master should potentially trigger a prod release
+    jobs:
+      # - your integration test jobs go here
+      # - you will want to call each integration testing job twice,
+      # - each under a different name:
+      # - once, for integration tests triggered by non-master-branch commits
+      # - and again, for tests triggered by commits to master
+      # - only commits to master should potentially trigger a prod release
 
-  #     # patch, minor, or major publishing
-  #     - orb-tools/dev-promote-prod:
-  #         name: dev-promote-patch
-  #         orb-name: circleci/orb-tools
-  #         ssh-fingerprints: # your SSH key fingerprint
-  #         cleanup-tags: true
-  #         requires:
-  #           # - your integration testing jobs go here
-  #         filters:
-  #           branches:
-  #             ignore: /.*/
-  #           tags:
-  #             only: /master-patch.*/
+      - install_cli_tar:
+          name: install_cli_tar-dev
+          context: orb-publishing
+          filters: *integration-dev_filters
+      - install_cli_tar:
+          name: install_cli_tar-master
+          context: orb-publishing
+          filters: *integration-master_filters
+      - install_cli_npm:
+          name: install_cli_tar-dev
+          context: orb-publishing
+          filters: *integration-dev_filters
+      - install_cli_npm:
+          name: install_cli_tar-master
+          context: orb-publishing
+          filters: *integration-master_filters
 
-  #     - orb-tools/dev-promote-prod:
-  #         name: dev-promote-minor
-  #         release: minor
-  #         orb-name: circleci/orb-tools
-  #         ssh-fingerprints: # your SSH key fingerprint
-  #         cleanup-tags: true
-  #         requires:
-  #           # - your integration testing jobs go here
-  #         filters:
-  #           branches:
-  #             ignore: /.*/
-  #           tags:
-  #             only: /master-minor.*/
+      # patch, minor, or major publishing
+      - orb-tools/dev-promote-prod:
+          name: dev-promote-patch
+          orb-name: circleci/salesforce-sfdx
+          ssh-fingerprints: af:51:88:95:26:d1:4c:8a:7b:16:da:12:25:ce:ec:40
+          cleanup-tags: true
+          requires:
+            *prod-deploy_requires
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /master-patch.*/
 
-  #     - orb-tools/dev-promote-prod:
-  #         name: dev-promote-major
-  #         release: major
-  #         orb-name: circleci/orb-tools
-  #         ssh-fingerprints: # your SSH key fingerprint
-  #         cleanup-tags: true
-  #         requires:
-  #           # - your integration testing jobs go here
-  #         filters:
-  #           branches:
-  #             ignore: /.*/
-  #           tags:
-  #             only: /master-major.*/
+      - orb-tools/dev-promote-prod:
+          name: dev-promote-minor
+          release: minor
+          orb-name: circleci/salesforce-sfdx
+          ssh-fingerprints: af:51:88:95:26:d1:4c:8a:7b:16:da:12:25:ce:ec:40
+          cleanup-tags: true
+          requires:
+            *prod-deploy_requires
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /master-minor.*/
+
+      - orb-tools/dev-promote-prod:
+          name: dev-promote-major
+          release: major
+          orb-name: circleci/salesforce-sfdx
+          ssh-fingerprints: af:51:88:95:26:d1:4c:8a:7b:16:da:12:25:ce:ec:40
+          cleanup-tags: true
+          requires:
+            *prod-deploy_requires
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /master-major.*/
 
 # yaml anchor filters
 integration-dev_filters: &integration-dev_filters

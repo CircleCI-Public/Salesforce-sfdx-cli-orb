@@ -1,0 +1,58 @@
+# How to author commands: https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
+description: >
+  'Install and configure the Salesforce "sfdx" cli utility giving access to the "sfdx" command. Set parameters to automatically set the sfdx config values. Also able to be set via environment variables. Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_config_values.htm'
+parameters:
+  version:
+    description: 'By default, the latest version of the standalone CLI will be installed. To install via npm, supply a version tag such as "latest" or "6".'
+    default: ''
+    type: string
+  instanceUrl:
+    description: The URL of the Salesforce instance that is hosting your org. 
+    default: ''
+    type: string
+  apiVersion:
+    description: The API version for a specific project or all projects. Normally, the Salesforce CLI assumes that you’re using the same version of the CLI as the Dev Hub org. 
+    default: ''
+    type: string
+  defaultusername:
+    description: The username for an org that all commands run against by default. 
+    default: ''
+    type: string
+  defaultdevhubusername:
+    description: The username of your Dev Hub org that the force:org:create command defaults to. 
+    default: ''
+    type: string
+steps:
+  - when:
+          condition: <<parameters.version>>
+          steps:
+            - run: 
+                name: Install SFDX - Standalone
+                command: |
+                  cd /tmp
+                  wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+                  mkdir sfdx
+                  tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
+                  ./sfdx/install
+  - unless:
+      condition: <<parameters.version>>
+      steps:
+        - run:
+            name: Install SFDX - NPM
+            command: |
+              if ! [ -x "$(command npm)" ]; then
+                echo 'Error: NPM appears to not be installed.' >&2
+                exit 1
+              fi
+              npm install sfdx-cli@<<parameter.version>> --global
+  - run:
+      name: Verify SFDX installation
+      command: sfdx --version
+  - run:
+      name: Setting up SFDX config
+      command: |
+        <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>><</parameters.instanceUrl>>
+        <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>
+        <<#parameters.defaultusername>>sfdx force:config:set defaultusername=<<parameters.defaultusername>><</parameters.defaultusername>>
+        <<#parameters.defaultdevhubusername>>sfdx force:config:set defaultdevhubusername=<<parameters.defaultdevhubusername>><</parameters.defaultdevhubusername>>
+

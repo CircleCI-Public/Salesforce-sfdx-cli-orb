@@ -1,0 +1,44 @@
+description: >
+  'An opinionated automation job for deploying your salesforce application to a scratch organization. This job installs the SFDX CLI contains a series of commands that can be quickly implemented to launch your app to a new scratch organization. Reference: https://github.com/trailheadapps/ebikes-lwc'
+executor: default
+parameters:
+  cli-version:
+    description: 'By default, the latest version of the standalone CLI will be installed. To install via npm, supply a version tag such as "latest" or "6".'
+    default: ''
+    type: string
+  scratch-alias:
+    description: Setting an alias each time you create a scratch org is a great way to track the scratch org’s function. And it’s much easier to remember when issuing subsequent CLI commands.
+    type: string
+  scratch-def:
+    description: Full path to scratch org definition json file. Example:'config/project-scratch-def.json'
+    type: string
+  permset:
+    description: 'Assign a pre-defined permission set to the default user. Learn more: https://help.salesforce.com/articleView?id=perm_sets_create.htm&type=5'
+    type: string
+  sampledata-path:
+    description: 'Path location to sample data json file. Example: ./data/sample-data-plan.json'
+    type: string
+  deploydir:
+    description: 'The root of the directory tree that contains the files to deploy. The root must contain a valid package.xml file describing the entities in the directory structure.'
+    type: string 
+steps:
+  - install:
+      version: <<parameters.cli-version>>
+  - run:
+      name: Create Scratch Org
+      command: sfdx force:org:create -s -f <<parameters.scratch-def>> -a <<parameters.scratch-alias>>
+  - run:
+      name: Push App To Scratch Org
+      command: sfdx force:source:push
+  - run:
+      name: Assign Permissions
+      command: sfdx force:user:permset:assign -n <<parameters.permset>>
+  - run:
+      name: Load Sample Data
+      command: sfdx force:data:tree:import --plan <<parameters.sampledata-path>>
+  - run:
+      name: Deploy Community metadata
+      command: sfdx force:mdapi:deploy -u <<parameters.scratch-alias>> --deploydir <<parameters.deploydir>>
+  - run:
+      name: Open Scratch Org
+      command: sfdx force:org:open
