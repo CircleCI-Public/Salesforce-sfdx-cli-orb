@@ -13,7 +13,7 @@ jobs:
           defaultusername: circleci
           defaultdevhubusername: circleciorg
   install_cli_npm:
-    executor: cimg/base:stable
+    executor: sfdx/default
     steps:
       - sfdx/install:
           version: latest
