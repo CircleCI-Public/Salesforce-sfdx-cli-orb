@@ -20,7 +20,7 @@ parameters:
     type: string
   deploydir:
     description: 'The root of the directory tree that contains the files to deploy. The root must contain a valid package.xml file describing the entities in the directory structure.'
-    type: string 
+    type: string
 steps:
   - install:
       version: <<parameters.cli-version>>

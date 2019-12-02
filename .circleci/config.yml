@@ -158,4 +158,3 @@ workflows:
               ignore: /.*/
             tags:
               only: /master-major.*/
-

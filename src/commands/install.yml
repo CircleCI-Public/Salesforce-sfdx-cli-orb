@@ -7,26 +7,26 @@ parameters:
     default: ''
     type: string
   instanceUrl:
-    description: The URL of the Salesforce instance that is hosting your org. 
+    description: The URL of the Salesforce instance that is hosting your org.
     default: ''
     type: string
   apiVersion:
-    description: The API version for a specific project or all projects. Normally, the Salesforce CLI assumes that you’re using the same version of the CLI as the Dev Hub org. 
+    description: The API version for a specific project or all projects. Normally, the Salesforce CLI assumes that you’re using the same version of the CLI as the Dev Hub org.
     default: ''
     type: string
   defaultusername:
-    description: The username for an org that all commands run against by default. 
+    description: The username for an org that all commands run against by default.
     default: ''
     type: string
   defaultdevhubusername:
-    description: The username of your Dev Hub org that the force:org:create command defaults to. 
+    description: The username of your Dev Hub org that the force:org:create command defaults to.
     default: ''
     type: string
 steps:
   - when:
-          condition: <<parameters.version>>
+        condition: <<parameters.version>>
           steps:
-            - run: 
+            - run:
                 name: Install SFDX - Standalone
                 command: |
                   cd /tmp
@@ -55,4 +55,3 @@ steps:
         <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>
         <<#parameters.defaultusername>>sfdx force:config:set defaultusername=<<parameters.defaultusername>><</parameters.defaultusername>>
         <<#parameters.defaultdevhubusername>>sfdx force:config:set defaultdevhubusername=<<parameters.defaultdevhubusername>><</parameters.defaultdevhubusername>>
-
