@@ -1,11 +1,11 @@
 # How to author Executors: https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-executors
 description: >
-  'Base CircleCI cimg convenience Docker image. This image is small, highly cached, and contains the minimum nessecary components needed for CI. Learn more: https://github.com/CircleCI-Public/cimg-base'
+  'cimg/node is a Docker image created by CircleCI with continuous integration builds in mind. Each tag contains a version of Node.js, npm, yarn, and any binaries and tools that are required for builds to complete successfully in a CircleCI environment. https://github.com/CircleCI-Public/cimg-node'
 docker:
   - image: 'cimg/node:<<parameters.tag>>'
 parameters:
   tag:
-    default: stable
+    default: 12.6
     description: >
       Pick a specific circleci/node image variant:
       https://hub.docker.com/r/cimg/node
