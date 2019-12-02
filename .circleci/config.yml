@@ -9,19 +9,13 @@ jobs:
     executor: sfdx/default
     working_directory: ~/project/sample
     steps:
-      - sfdx/install:
-          instanceUrl: https://circleci--test.cs9.my.salesforce.com
-          defaultusername: circleci
-          defaultdevhubusername: circleciorg
+      - sfdx/install
   install_cli_npm:
     executor: sfdx/default
     working_directory: ~/project/sample
     steps:
       - sfdx/install:
           version: latest
-          instanceUrl: https://circleci--test.cs9.my.salesforce.com
-          defaultusername: circleci
-          defaultdevhubusername: circleciorg
 
 # yaml anchor filters
 prod-deploy_requires: &prod-deploy_requires
