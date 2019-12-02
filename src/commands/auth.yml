@@ -1,0 +1,35 @@
+description: >
+  'Authenticate with and configure teh SFDX CLI after installation.'
+parameters:
+  defaultusername:
+    description: The username for an org that all commands run against by default.
+    default: ''
+    type: string
+  defaultdevhubusername:
+    description: The username of your Dev Hub org that the force:org:create command defaults to.
+    default: ''
+    type: string
+  jwtKey:
+    description: 'Path to the server.key file. Example: "./assets.server.key"'
+    type: string
+  clientid:
+    description: 'The client ID of the connected app for salesforce.'
+    type: string
+  instanceUrl:
+    description: The URL of the Salesforce instance that is hosting your org.
+    default: ''
+    type: string
+  apiVersion:
+    description: The API version for a specific project or all projects. Normally, the Salesforce CLI assumes that you’re using the same version of the CLI as the Dev Hub org.
+    default: ''
+    type: string
+steps:
+  - run:
+      name: Authenticating with SFDX and configuring.
+      command: |
+        <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>><</parameters.instanceUrl>> --global
+        sfdx force:auth:jwt:grant --clientid <<parameters.clientid>> \
+        --jwtkeyfile <<parameters.jwtKey>> --username <<parameters.defaultusername>> \
+        --setdefaultdevhubusername --setalias <<parameters.defaultdevhubusername>>
+        <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>
+
