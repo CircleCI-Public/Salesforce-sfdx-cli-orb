@@ -24,7 +24,7 @@ parameters:
     type: string
 steps:
   - when:
-        condition: <<parameters.version>>
+          condition: <<parameters.version>>
           steps:
             - run:
                 name: Install SFDX - Standalone
