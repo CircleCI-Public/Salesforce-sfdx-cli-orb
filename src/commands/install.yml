@@ -40,8 +40,8 @@ steps:
         - run:
             name: Install SFDX - NPM
             command: |
-              if ! [ -x "$(command npm)" ]; then
-                echo 'Error: NPM appears to not be installed.' >&2
+              if which npm > /dev/null; then
+                echo 'Error: NPM appears to not be installed.'
                 exit 1
               fi
               npm install sfdx-cli@<<parameters.version>> --global
