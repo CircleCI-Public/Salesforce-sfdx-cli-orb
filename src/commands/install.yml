@@ -49,6 +49,6 @@ steps:
       name: Setting up SFDX config
       command: |
         <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>><</parameters.instanceUrl>> --global
-        <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>> --global
-        <<#parameters.defaultusername>>sfdx force:config:set defaultusername=<<parameters.defaultusername>><</parameters.defaultusername>> --global
-        <<#parameters.defaultdevhubusername>>sfdx force:config:set defaultdevhubusername=<<parameters.defaultdevhubusername>><</parameters.defaultdevhubusername>> --global
+        <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>
+        <<#parameters.defaultusername>>sfdx force:config:set defaultusername=<<parameters.defaultusername>><</parameters.defaultusername>>
+        <<#parameters.defaultdevhubusername>>sfdx force:config:set defaultdevhubusername=<<parameters.defaultdevhubusername>><</parameters.defaultdevhubusername>>

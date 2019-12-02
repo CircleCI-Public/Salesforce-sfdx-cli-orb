@@ -7,6 +7,7 @@ orbs:
 jobs:
   install_cli_tar:
     executor: sfdx/default
+    working_directory: ~/project/sample
     steps:
       - sfdx/install:
           instanceUrl: https://circleci--test.cs9.my.salesforce.com
@@ -14,6 +15,7 @@ jobs:
           defaultdevhubusername: circleciorg
   install_cli_npm:
     executor: sfdx/default
+    working_directory: ~/project/sample
     steps:
       - sfdx/install:
           version: latest
