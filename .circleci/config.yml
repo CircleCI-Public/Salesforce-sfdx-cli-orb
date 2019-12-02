@@ -1,8 +1,5 @@
 version: 2.1
 
-# add your orb below, to be used in integration tests (note: a @dev:alpha
-# release must exist; you'll need to publish manually at least once)
-# you can use scripts/publish-alpha.sh to publish a @dev:alpha release
 orbs:
   sfdx: circleci/salesforce-sfdx@dev:alpha
   orb-tools: circleci/orb-tools@8.27.3
