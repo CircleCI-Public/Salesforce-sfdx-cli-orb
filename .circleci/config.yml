@@ -16,7 +16,7 @@ jobs:
     executor: cimg/base:stable
     steps:
       - sfdx/install:
-          cli-version: latest
+          version: latest
           instanceUrl: https://circleci--test.cs9.my.salesforce.com
           defaultusername: circleci
           defaultdevhubusername: circleciorg
