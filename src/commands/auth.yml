@@ -1,5 +1,5 @@
 description: >
-  'Authenticate with and configure teh SFDX CLI after installation.'
+  'Authenticate with and configure the SFDX CLI after installation. This orb utilizes JWT-based authentication. You will need to create a connected app and provide a base64 encoded server key for authentication. Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm'
 parameters:
   defaultusername:
     description: The username for an org that all commands run against by default.
@@ -10,8 +10,9 @@ parameters:
     default: ''
     type: string
   jwtKey:
-    description: 'Path to the server.key file. Example: "./assets.server.key"'
-    type: string
+    description: Environment variable containing the base64 encoded private server key.
+    default: SFDX_JWT_KEY
+    type: env_var_name
   clientid:
     description: 'The client ID of the connected app for salesforce.'
     type: string
@@ -27,9 +28,16 @@ steps:
   - run:
       name: Authenticating with SFDX and configuring.
       command: |
+        echo Creating jwt key file.
+        echo
+        if [ -f ./server.key ]; then
+          echo "It appears you may have commited your server.key file. For your safety please never commit secrets to your code repository. We instead recommend utilizing environment variables for this purpose. You may wish to invalidate and regenerate your server key."
+          exit 1
+        fi
+        echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
         <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>><</parameters.instanceUrl>> --global
         sfdx force:auth:jwt:grant --clientid <<parameters.clientid>> \
-        --jwtkeyfile <<parameters.jwtKey>> --username <<parameters.defaultusername>> \
+        --jwtkeyfile ./server.key --username <<parameters.defaultusername>> \
         --setdefaultdevhubusername --setalias <<parameters.defaultdevhubusername>>
         <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>
 
