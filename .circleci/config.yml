@@ -21,7 +21,8 @@ jobs:
     working_directory: ~/project/sample
     steps:
       - sfdx/install
-      - sfdx/auth
+      - sfdx/auth:
+          instanceUrl: https://circleci--test.cs9.my.salesforce.com/
 
 # yaml anchor filters
 prod-deploy_requires: &prod-deploy_requires

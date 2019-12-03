@@ -36,7 +36,7 @@ steps:
           exit 1
         fi
         echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
-        <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>><</parameters.instanceUrl>> --global
+        <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>> --global<</parameters.instanceUrl>>
         sfdx force:auth:jwt:grant --clientid $<<parameters.consumerKey>> \
         --jwtkeyfile ./server.key --username <<parameters.defaultusername>> \
         --setdefaultdevhubusername --setalias <<parameters.defaultdevhubusername>>
