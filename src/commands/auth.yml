@@ -6,8 +6,8 @@ parameters:
     default: ''
     type: string
   defaultdevhubusername:
-    description: The username of your Dev Hub org that the force:org:create command defaults to.
-    default: ''
+    description: The username of your Dev Hub org that the force:org:create command defaults to. Used as alias.
+    default: '${CIRCLE_PROJECT_REPONAME}-${CIRCLE_BRANCH}'
     type: string
   jwtKey:
     description: Environment variable containing the base64 encoded private server key.
