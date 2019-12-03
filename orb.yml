@@ -1,7 +1,7 @@
 commands:
   auth:
     description: |
-      'Authenticate with and configure teh SFDX CLI after installation.'
+      'Authenticate with and configure the SFDX CLI after installation. This orb utilizes JWT-based authentication. You will need to create a connected app and provide a base64 encoded server key for authentication. Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm'
     parameters:
       apiVersion:
         default: ""
@@ -9,9 +9,11 @@ commands:
           the Salesforce CLI assumes that you’re using the same version of the CLI
           as the Dev Hub org.
         type: string
-      clientid:
-        description: The client ID of the connected app for salesforce.
-        type: string
+      consumerKey:
+        default: SFDX_CONSUMER_KEY
+        description: The consumner key of the connected app for salesforce. Stored
+          as an environment variable
+        type: env_var_name
       defaultdevhubusername:
         default: ""
         description: The username of your Dev Hub org that the force:org:create command
@@ -26,14 +28,23 @@ commands:
         description: The URL of the Salesforce instance that is hosting your org.
         type: string
       jwtKey:
-        description: 'Path to the server.key file. Example: "./assets.server.key"'
-        type: string
+        default: SFDX_JWT_KEY
+        description: Environment variable containing the base64 encoded private server
+          key.
+        type: env_var_name
     steps:
     - run:
         command: |
+          echo Creating jwt key file.
+          echo
+          if [ -f ./server.key ]; then
+            echo "It appears you may have commited your server.key file. For your safety please never commit secrets to your code repository. We instead recommend utilizing environment variables for this purpose. You may wish to invalidate and regenerate your server key."
+            exit 1
+          fi
+          echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
           <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>><</parameters.instanceUrl>> --global
-          sfdx force:auth:jwt:grant --clientid <<parameters.clientid>> \
-          --jwtkeyfile <<parameters.jwtKey>> --username <<parameters.defaultusername>> \
+          sfdx force:auth:jwt:grant --clientid $<<parameters.consumerKey>> \
+          --jwtkeyfile ./server.key --username <<parameters.defaultusername>> \
           --setdefaultdevhubusername --setalias <<parameters.defaultdevhubusername>>
           <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>
         name: Authenticating with SFDX and configuring.
