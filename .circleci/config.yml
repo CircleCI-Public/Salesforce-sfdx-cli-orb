@@ -16,12 +16,19 @@ jobs:
     steps:
       - sfdx/install:
           version: latest
+  install_authenticate:
+    executor: sfdx/default
+    working_directory: ~/project/sample
+    steps:
+      - sfdx/install
+      - sfdx/auth
 
 # yaml anchor filters
 prod-deploy_requires: &prod-deploy_requires
   [
     install_cli_tar-master,
-    install_cli_npm-master
+    install_cli_npm-master,
+    install_authenticate-master
   ]
 
 integration-dev_filters: &integration-dev_filters
@@ -110,6 +117,14 @@ workflows:
           filters: *integration-dev_filters
       - install_cli_npm:
           name: install_cli_npm-master
+          context: orb-publishing
+          filters: *integration-master_filters
+      - install_authenticate:
+          name: install_authenticate-dev
+          context: orb-publishing
+          filters: *integration-dev_filters
+      - install_authenticate:
+          name: install_authenticate-master
           context: orb-publishing
           filters: *integration-master_filters
 
