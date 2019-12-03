@@ -35,6 +35,7 @@ steps:
           echo "It appears you may have commited your server.key file. For your safety please never commit secrets to your code repository. We instead recommend utilizing environment variables for this purpose. You may wish to invalidate and regenerate your server key."
           exit 1
         fi
+        export SFDX_AUDIENCE_URL=https://test.salesforce.com
         echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
         <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>> --global<</parameters.instanceUrl>>
         sfdx force:auth:jwt:grant --clientid $<<parameters.consumerKey>> \
