@@ -5,10 +5,16 @@ description: >
 usage:
   version: 2.1
   orbs:
-    foo: bar/foo@1.2.3
+    sfdx: circleci/salesforce-sfdx@x.y
   jobs:
-    build:
-      machine: true
+    install_authenticate:
+      executor: sfdx/default
+      working_directory: ~/project/sample
       steps:
-        - foo/hello:
-            username: "Anna"
+        - sfdx/install
+        - sfdx/auth:
+            defaultusername: user@email.com
+        - run:
+            name: Run your SFDX commands here
+            command: |
+              echo "You now have access to the sfdx cli and may execute commands against it. https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm"
