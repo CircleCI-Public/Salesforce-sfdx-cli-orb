@@ -3,7 +3,6 @@ description: >
 parameters:
   defaultusername:
     description: The username for an org that all commands run against by default.
-    default: ''
     type: string
   defaultdevhubusername:
     description: The username of your Dev Hub org that the force:org:create command defaults to. Used as alias.
