@@ -22,8 +22,7 @@ jobs:
     steps:
       - sfdx/install
       - sfdx/auth:
-          instanceUrl: https://circleci--test.cs9.my.salesforce.com/
-          defaultusername: kyle.tryon@circleci.com.test
+          defaultusername: community-partner@circleci.com
 
 # yaml anchor filters
 prod-deploy_requires: &prod-deploy_requires
