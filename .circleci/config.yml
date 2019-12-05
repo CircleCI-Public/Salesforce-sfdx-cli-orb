@@ -128,19 +128,19 @@ workflows:
           filters: *integration-master_filters
       - sfdx/scratch-deploy:
           name: scratch-deploy-master
-          deploydir: ./mdapiDeploy/unpackaged
-          sampledata-path: ./data/sample-data-plan.json
+          deploydir: ./sample/mdapiDeploy/unpackaged
+          sampledata-path: ./sample/data/sample-data-plan.json
           permset: orbs
-          scratch-def: ./config/project-scratch-def.json
+          scratch-def: ./sample/config/project-scratch-def.json
           scratch-alias: orb-test
           defaultusername: community-partner@circleci.com
           filters: *integration-master_filters
       - sfdx/scratch-deploy:
           name: scratch-deploy-dev
-          deploydir: ./mdapiDeploy/unpackaged
-          sampledata-path: ./data/sample-data-plan.json
+          deploydir: ./sample/mdapiDeploy/unpackaged
+          sampledata-path: ./sample/data/sample-data-plan.json
           permset: orbs
-          scratch-def: ./config/project-scratch-def.json
+          scratch-def: ./sample/config/project-scratch-def.json
           scratch-alias: orb-test
           defaultusername: community-partner@circleci.com
           filters: *integration-dev_filters
