@@ -23,6 +23,9 @@ jobs:
       - sfdx/install
       - sfdx/auth:
           defaultusername: community-partner@circleci.com
+      - run:
+          name: Check Auth List
+          command: sfdx force:auth:list
 
 # yaml anchor filters
 prod-deploy_requires: &prod-deploy_requires

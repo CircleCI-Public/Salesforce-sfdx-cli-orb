@@ -28,6 +28,14 @@ steps:
   - run:
       name: Authenticating with SFDX and configuring.
       command: |
+        if [ -z $<<parameters.jwtKey>> ]; then
+          echo "Authentication requires a base64 encoded server key to be provided as an evironment variable. Please ensure the <<parameters.jwtKey>> env var has been set correctly."
+          exit 1
+        fi
+        if [ -z $<<parameters.consumerKey>> ]; then
+          echo "Authentication requires a consumer key to be present. Please ensure the <<parameters.consumerKey>> env var has been set correctly."
+          exit 1
+        fi
         echo Creating jwt key file.
         echo
         if [ -f ./server.key ]; then

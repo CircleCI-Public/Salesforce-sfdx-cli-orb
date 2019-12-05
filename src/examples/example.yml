@@ -1,7 +1,5 @@
 description: >
-  Sample example description.
-  # What will this example document?
-  # Descriptions should be short, simple, and clear.
+  Simple example showing how to install the Salesforce sfdx CLI with the default options and authenticate against it with JWT.
 usage:
   version: 2.1
   orbs:
@@ -9,8 +7,8 @@ usage:
   jobs:
     install_authenticate:
       executor: sfdx/default
-      working_directory: ~/project/sample
       steps:
+        - checkout
         - sfdx/install
         - sfdx/auth:
             defaultusername: user@email.com
@@ -18,3 +16,8 @@ usage:
             name: Run your SFDX commands here
             command: |
               echo "You now have access to the sfdx cli and may execute commands against it. https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm"
+              sfdx force:auth:list
+  workflows:
+    basic-test:
+      jobs:
+        - install_authenticate
