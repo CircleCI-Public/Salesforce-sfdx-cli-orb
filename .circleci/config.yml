@@ -128,6 +128,11 @@ workflows:
           filters: *integration-master_filters
       - sfdx/scratch-deploy:
           name: scratch-deploy-master
+          deploydir: ./mdapiDeploy/unpackaged
+          sampledata-path: ./data/sample-data-plan.json
+          permset: orbs
+          scratch-def: ./config/project-scratch-def.json
+          scratch-alias: orb-test
           filters: *integration-master_filters
       - sfdx/scratch-deploy:
           name: scratch-deploy-dev
@@ -136,6 +141,11 @@ workflows:
       # patch, minor, or major publishing
       - orb-tools/dev-promote-prod:
           name: dev-promote-patch
+          deploydir: ./mdapiDeploy/unpackaged
+          sampledata-path: ./data/sample-data-plan.json
+          permset: orbs
+          scratch-def: ./config/project-scratch-def.json
+          scratch-alias: orb-test
           orb-name: circleci/salesforce-sfdx
           ssh-fingerprints: af:51:88:95:26:d1:4c:8a:7b:16:da:12:25:ce:ec:40
           cleanup-tags: true

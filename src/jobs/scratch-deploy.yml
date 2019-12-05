@@ -10,7 +10,7 @@ parameters:
     description: Setting an alias each time you create a scratch org is a great way to track the scratch org’s function. And it’s much easier to remember when issuing subsequent CLI commands.
     type: string
   scratch-def:
-    description: Full path to scratch org definition json file. Example:'config/project-scratch-def.json'
+    description: Full path to scratch org definition json file. Example:'./config/project-scratch-def.json'
     type: string
   permset:
     description: 'Assign a pre-defined permission set to the default user. Learn more: https://help.salesforce.com/articleView?id=perm_sets_create.htm&type=5'
