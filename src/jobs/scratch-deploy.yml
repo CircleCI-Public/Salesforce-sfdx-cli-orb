@@ -45,6 +45,7 @@ parameters:
     default: ''
     type: string
 steps:
+  - checkout
   - install:
       version: <<parameters.cli-version>>
   - auth:
@@ -54,7 +55,6 @@ steps:
       jwtKey: <<parameters.jwtKey>>
       defaultdevhubusername: <<parameters.defaultdevhubusername>>
       defaultusername: <<parameters.defaultusername>>
-  - checkout
   - run:
       name: Create Scratch Org
       command: sfdx force:org:create -s -f <<parameters.scratch-def>> -a <<parameters.scratch-alias>>
