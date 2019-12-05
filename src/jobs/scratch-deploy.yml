@@ -57,7 +57,7 @@ steps:
       defaultusername: <<parameters.defaultusername>>
   - run:
       name: Create Scratch Org
-      command: sfdx force:org:create -s -f <<parameters.scratch-def>> -a <<parameters.scratch-alias>>
+      command: pwd && ls -lah && sfdx force:org:create -s -f <<parameters.scratch-def>> -a <<parameters.scratch-alias>>
   - run:
       name: Push App To Scratch Org
       command: sfdx force:source:push
