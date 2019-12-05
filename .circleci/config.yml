@@ -133,7 +133,7 @@ workflows:
           permset: orbs
           scratch-def: ./config/project-scratch-def.json
           scratch-alias: orb-test
-          defaultdevhubusername: community-partner@circleci.com
+          defaultusername: community-partner@circleci.com
           filters: *integration-master_filters
       - sfdx/scratch-deploy:
           name: scratch-deploy-dev
@@ -142,7 +142,7 @@ workflows:
           permset: orbs
           scratch-def: ./config/project-scratch-def.json
           scratch-alias: orb-test
-          defaultdevhubusername: community-partner@circleci.com
+          defaultusername: community-partner@circleci.com
           filters: *integration-dev_filters
 
       # patch, minor, or major publishing
