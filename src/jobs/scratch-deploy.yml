@@ -42,3 +42,9 @@ steps:
   - run:
       name: Open Scratch Org
       command: sfdx force:org:open
+  - run:
+      name: Run Unit Tests
+      command: sfdx force:apex:test:run --wait 10 --resultformat junit --codecoverage --testlevel RunLocalTests
+  - run:
+      name: Delete scratch org
+      command: sfdx force:org:delete --noprompt

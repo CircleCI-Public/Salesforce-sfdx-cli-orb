@@ -32,7 +32,8 @@ prod-deploy_requires: &prod-deploy_requires
   [
     install_cli_tar-master,
     install_cli_npm-master,
-    install_authenticate-master
+    install_authenticate-master,
+    scratch-deploy-master
   ]
 
 integration-dev_filters: &integration-dev_filters
@@ -109,28 +110,28 @@ workflows:
 
       - install_cli_tar:
           name: install_cli_tar-dev
-          context: orb-publishing
           filters: *integration-dev_filters
       - install_cli_tar:
           name: install_cli_tar-master
-          context: orb-publishing
           filters: *integration-master_filters
       - install_cli_npm:
           name: install_cli_tar-dev
-          context: orb-publishing
           filters: *integration-dev_filters
       - install_cli_npm:
           name: install_cli_npm-master
-          context: orb-publishing
           filters: *integration-master_filters
       - install_authenticate:
           name: install_authenticate-dev
-          context: orb-publishing
           filters: *integration-dev_filters
       - install_authenticate:
           name: install_authenticate-master
-          context: orb-publishing
           filters: *integration-master_filters
+      - sfdx/scratch-deploy:
+          name: scratch-deploy-master
+          filters: *integration-master_filters
+      - sfdx/scratch-deploy:
+          name: scratch-deploy-dev
+          filters: *integration-dev_filters
 
       # patch, minor, or major publishing
       - orb-tools/dev-promote-prod:
