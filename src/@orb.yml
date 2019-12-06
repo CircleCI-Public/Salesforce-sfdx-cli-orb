@@ -3,5 +3,5 @@ version: 2.1
 description: >
   Salesforce SFDX CLI integration for CircleCI. Easily create CI/CD pipelines for your Salesforce integrations.
 
-  display:
-    home_url: https://github.com/CircleCI-Public/Salesforce-sfdx-cli-orb
+display:
+  home_url: https://github.com/CircleCI-Public/Salesforce-sfdx-cli-orb
