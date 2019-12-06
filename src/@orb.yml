@@ -1,9 +1,7 @@
 version: 2.1
 
 description: >
-  Sample orb description
-  # What will your orb allow users to do?
-  # Descriptions should be short, simple, and clear.
+  Salesforce SFDX CLI integration for CircleCI. Easily create CI/CD pipelines for your Salesforce integrations.
 
-orbs:
-  hello: circleci/hello-build@0.0.5 # Sample imported orb
+  display:
+    home_url: https://github.com/CircleCI-Public/Salesforce-sfdx-cli-orb

@@ -1,5 +1,5 @@
 description: >
-  'An opinionated automation job for deploying your salesforce application to a scratch organization. This job installs the SFDX CLI contains a series of commands that can be quickly implemented to launch your app to a new scratch organization. Reference: https://github.com/trailheadapps/ebikes-lwc'
+  An opinionated automation job for deploying your salesforce application to a scratch organization, executing apex unit testing, and finally removing the scratch org. Check this job's source for the full list of commands ran.
 executor: default
 parameters:
   cli-version:
