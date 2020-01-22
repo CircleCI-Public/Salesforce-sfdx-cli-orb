@@ -79,3 +79,4 @@ steps:
   - run:
       name: Delete scratch org
       command: sfdx force:org:delete --noprompt
+      when: always
