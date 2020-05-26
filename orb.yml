@@ -88,6 +88,57 @@ commands:
     - run:
         command: sfdx --version
         name: Verify SFDX installation
+  scratch-create:
+    description: |
+      'Create a scratch Salesforce Org.'
+    parameters:
+      overrides:
+        default: ""
+        description: Overrides for scratch organization.
+        type: string
+      scratch-alias:
+        description: The alias of the scratch Org.
+        type: string
+      scratch-config:
+        description: The scratch JSON definition.
+        type: string
+    steps:
+    - run:
+        command: |-
+          sfdx force:org:create -f << parameters.scratch-config >> -a << parameters.scratch-alias >> <<# parameters.overrides >> << parameters.overrides >> <</ parameters.overrides >>
+          sfdx force:org:list | grep << parameters.scratch-config >>
+        name: Create << parameters.scratch-alias >> SalesForce Org
+  scratch-delete:
+    description: |
+      'Delete a scratch Salesforce Org.'
+    parameters:
+      scratch-alias:
+        default: ""
+        description: The name of the scratch Org, can either be the alias or target
+          username.
+        type: string
+    steps:
+    - run:
+        command: sfdx force:org:delete --noprompt <<# parameters.scratch-alias >>
+          -u << parameters.scratch-alias >><</ parameters.scratch-alias >>
+        name: Delete <<# parameters.scratch-alias >><< parameters.scratch-alias >>
+          <</ parameters.scratch-alias >>SalesForce Org
+        when: always
+  scratch-open:
+    description: |
+      'Open a scratch Salesforce Org.'
+    parameters:
+      scratch-alias:
+        default: ""
+        description: The name of the scratch Org, can either be the alias or target
+          username.
+        type: string
+    steps:
+    - run:
+        command: sfdx force:org:open <<# parameters.scratch-alias >> -u << parameters.scratch-alias
+          >><</ parameters.scratch-alias >>
+        name: Open <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</
+          parameters.scratch-alias >>SalesForce Org in browser
 description: |
   Salesforce SFDX CLI integration for CircleCI. Easily create CI/CD pipelines for your Salesforce integrations.
 display:
@@ -107,7 +158,7 @@ examples:
               defaultusername: user@email.com
           - run:
               command: |
-                echo "You now have access to the sfdx cli and may execute commands against it. https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm"
+                echo You now have access to the sfdx cli and may execute commands against it.
                 sfdx force:auth:list
               name: Run your SFDX commands here
       orbs:
@@ -200,9 +251,9 @@ jobs:
         defaultusername: <<parameters.defaultusername>>
         instanceUrl: <<parameters.instanceUrl>>
         jwtKey: <<parameters.jwtKey>>
-    - run:
-        command: sfdx force:org:create -f <<parameters.scratch-def>> -a <<parameters.scratch-alias>>
-        name: Create Scratch Org
+    - scratch-create:
+        scratch-alias: <<parameters.scratch-alias>>
+        scratch-config: <<parameters.scratch-def>>
     - run:
         command: sfdx force:source:push
         name: Push App To Scratch Org
@@ -216,15 +267,13 @@ jobs:
         command: sfdx force:mdapi:deploy -u <<parameters.scratch-alias>> --deploydir
           <<parameters.deploydir>>
         name: Deploy Community metadata
-    - run:
-        command: sfdx force:org:open
-        name: Open Scratch Org
+    - scratch-open:
+        scratch-alias: <<parameters.scratch-alias>>
     - run:
         command: sfdx force:apex:test:run --wait 10 --resultformat junit --codecoverage
           --testlevel RunLocalTests
         name: Run Unit Tests
-    - run:
-        command: sfdx force:org:delete --noprompt
-        name: Delete scratch org
+    - scratch-delete:
+        scratch-alias: <<parameters.scratch-alias>>
 version: 2.1
 
