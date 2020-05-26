@@ -4,6 +4,7 @@ description: >
 parameters:
   scratch-config:
     description: 'The scratch JSON definition.'
+    type: string
   scratch-alias:
     description: 'The alias of the scratch Org.'
     type: string

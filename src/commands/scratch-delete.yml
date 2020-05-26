@@ -9,6 +9,6 @@ parameters:
 
 steps:
   - run:
-    name: Delete <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>SalesForce Org
-    command: sfdx force:org:delete --noprompt <<# parameters.scratch-alias >> -u << parameters.scratch-alias >><</ parameters.scratch-alias >>
-    when: always
+      name: Delete <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>SalesForce Org
+      command: sfdx force:org:delete --noprompt <<# parameters.scratch-alias >> -u << parameters.scratch-alias >><</ parameters.scratch-alias >>
+      when: always
