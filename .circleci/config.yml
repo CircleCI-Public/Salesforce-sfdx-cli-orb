@@ -30,6 +30,7 @@ jobs:
     executor: sfdx/default
     working_directory: ~/project
     steps:
+      - checkout
       - sfdx/install
       - sfdx/auth:
           defaultusername: community-partner@circleci.com
