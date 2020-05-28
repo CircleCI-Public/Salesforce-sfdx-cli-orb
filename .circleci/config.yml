@@ -22,7 +22,7 @@ jobs:
     steps:
       - sfdx/install
       - sfdx/auth:
-          defaultusername: community-partner@circleci.com
+          defaultusername: gabriel@circleci.cpe
       - run:
           name: Check Auth List
           command: sfdx force:auth:list
@@ -33,7 +33,7 @@ jobs:
       - checkout
       - sfdx/install
       - sfdx/auth:
-          defaultusername: community-partner@circleci.com
+          defaultusername: gabriel@circleci.cpe
       - sfdx/scratch-create:
           scratch-config: "./sample/scratch-def.json"
           scratch-alias: "circleci"
