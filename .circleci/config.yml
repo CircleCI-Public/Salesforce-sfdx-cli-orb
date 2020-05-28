@@ -12,13 +12,13 @@ jobs:
       - sfdx/install
   install_cli_npm:
     executor: sfdx/default
-    working_directory: ~/project/sample
+    working_directory: ~/project
     steps:
       - sfdx/install:
           version: latest
   install_authenticate:
     executor: sfdx/default
-    working_directory: ~/project/sample
+    working_directory: ~/project
     steps:
       - sfdx/install
       - sfdx/auth:
@@ -26,6 +26,20 @@ jobs:
       - run:
           name: Check Auth List
           command: sfdx force:auth:list
+  scratch_functions:
+    executor: sfdx/default
+    working_directory: ~/project
+    steps:
+      - sfdx/install
+      - sfdx/auth:
+          defaultusername: community-partner@circleci.com
+      - sfdx/scratch-create:
+          scratch-config: "./sample/scratch-def.json"
+          scratch-alias: "circleci"
+      - sfdx/scratch-open:
+          scratch-alias: "circleci"
+      - sfdx/scratch-delete:
+          scratch-alias: "circleci"
 
 # yaml anchor filters
 prod-deploy_requires: &prod-deploy_requires
@@ -33,6 +47,7 @@ prod-deploy_requires: &prod-deploy_requires
     install_cli_tar-master,
     install_cli_npm-master,
     install_authenticate-master,
+    scratch_functions-master,
   ]
 
 integration-dev_filters: &integration-dev_filters
@@ -114,7 +129,7 @@ workflows:
           name: install_cli_tar-master
           filters: *integration-master_filters
       - install_cli_npm:
-          name: install_cli_tar-dev
+          name: install_cli_npm-dev
           filters: *integration-dev_filters
       - install_cli_npm:
           name: install_cli_npm-master
@@ -124,6 +139,12 @@ workflows:
           filters: *integration-dev_filters
       - install_authenticate:
           name: install_authenticate-master
+          filters: *integration-master_filters
+      - scratch_functions:
+          name: scratch_functions-dev
+          filters: *integration-dev_filters
+      - scratch_functions:
+          name: scratch_functions-master
           filters: *integration-master_filters
 
       # patch, minor, or major publishing
