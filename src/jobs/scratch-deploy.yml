@@ -55,9 +55,9 @@ steps:
       jwtKey: <<parameters.jwtKey>>
       defaultdevhubusername: <<parameters.defaultdevhubusername>>
       defaultusername: <<parameters.defaultusername>>
-  - run:
-      name: Create Scratch Org
-      command: sfdx force:org:create -f <<parameters.scratch-def>> -a <<parameters.scratch-alias>>
+  - scratch-create:
+      scratch-config: <<parameters.scratch-def>>
+      scratch-alias: <<parameters.scratch-alias>>
   - run:
       name: Push App To Scratch Org
       command: sfdx force:source:push
@@ -70,13 +70,10 @@ steps:
   - run:
       name: Deploy Community metadata
       command: sfdx force:mdapi:deploy -u <<parameters.scratch-alias>> --deploydir <<parameters.deploydir>>
-  - run:
-      name: Open Scratch Org
-      command: sfdx force:org:open
+  - scratch-open:
+      scratch-alias: <<parameters.scratch-alias>>
   - run:
       name: Run Unit Tests
       command: sfdx force:apex:test:run --wait 10 --resultformat junit --codecoverage --testlevel RunLocalTests
-  - run:
-      name: Delete scratch org
-      command: sfdx force:org:delete --noprompt
-      when: always
+  - scratch-delete:
+      scratch-alias: <<parameters.scratch-alias>>

@@ -1,0 +1,13 @@
+# Open a Scratch Org.
+description: >
+  'Open a scratch Salesforce Org.'
+parameters:
+  scratch-alias:
+    description: 'The name of the scratch Org, can either be the alias or target username.'
+    default: ''
+    type: string
+
+steps:
+  - run:
+      name: Open <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>SalesForce Org in browser
+      command: sfdx force:org:open <<# parameters.scratch-alias >> -u << parameters.scratch-alias >><</ parameters.scratch-alias >>
