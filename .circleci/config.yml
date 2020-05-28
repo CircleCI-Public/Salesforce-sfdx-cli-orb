@@ -126,24 +126,6 @@ workflows:
       - install_authenticate:
           name: install_authenticate-master
           filters: *integration-master_filters
-      - sfdx/scratch-deploy:
-          name: scratch-deploy-master
-          deploydir: ./sample/mdapiDeploy/unpackaged
-          sampledata-path: ./sample/data/sample-data-plan.json
-          permset: orbs
-          scratch-def: ./sample/config/project-scratch-def.json
-          scratch-alias: orb-test
-          defaultusername: community-partner@circleci.com
-          filters: *integration-master_filters
-      - sfdx/scratch-deploy:
-          name: scratch-deploy-dev
-          deploydir: ./sample/mdapiDeploy/unpackaged
-          sampledata-path: ./sample/data/sample-data-plan.json
-          permset: orbs
-          scratch-def: ./sample/config/project-scratch-def.json
-          scratch-alias: orb-test
-          defaultusername: community-partner@circleci.com
-          filters: *integration-dev_filters
 
       # patch, minor, or major publishing
       - orb-tools/dev-promote-prod:
