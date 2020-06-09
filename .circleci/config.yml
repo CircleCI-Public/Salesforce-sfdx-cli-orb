@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  apex: circleci/salesforce-sfdx@<<pipeline.parameters.dev-orb-version>>
+  sfdx: circleci/salesforce-sfdx@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@9.0
 
 parameters:
