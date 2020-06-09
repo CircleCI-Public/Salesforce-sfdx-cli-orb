@@ -1,0 +1,26 @@
+description: >
+  Create, open then delete a scratch org.
+usage:
+  version: 2.1
+  orbs:
+    sfdx: circleci/salesforce-sfdx@x.y
+  jobs:
+    create-open-delete:
+      executor: sfdx/default
+      steps:
+        - checkout
+        - sfdx/install
+        - sfdx/auth:
+            defaultusername: user@email.com
+        - sfdx/scratch-create:
+            scratch-config: "./config/project-scratch-def.json"
+            scratch-alias: "circleci"
+        - sfdx/scratch-open:
+            scratch-alias: "circleci"
+        - sfdx/scratch-delete:
+            scratch-alias: "circleci"
+
+  workflows:
+    basic-test:
+      jobs:
+        - create-open-delete

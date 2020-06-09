@@ -1,0 +1,21 @@
+# Creates a scratch SFDX Org.
+description: >
+  'Create a scratch Salesforce Org.'
+parameters:
+  scratch-config:
+    description: 'The scratch JSON definition.'
+    type: string
+  scratch-alias:
+    description: 'The alias of the scratch Org.'
+    type: string
+  overrides:
+    description: 'Overrides for scratch organization.'
+    type: string
+    default: ''
+
+steps:
+  - run:
+      name: Create << parameters.scratch-alias >> SalesForce Org
+      command: |
+       sfdx force:org:create -f << parameters.scratch-config >> -a << parameters.scratch-alias >> <<# parameters.overrides >> << parameters.overrides >> <</ parameters.overrides >>
+       sfdx force:org:list | grep << parameters.scratch-alias >>

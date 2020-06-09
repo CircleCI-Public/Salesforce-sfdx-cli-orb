@@ -8,18 +8,8 @@ parameters:
     type: string
 
 steps:
+  # when version is defined.
   - when:
-          condition: <<parameters.version>>
-          steps:
-            - run:
-                name: Install SFDX - Standalone
-                command: |
-                  cd /tmp
-                  wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-                  mkdir sfdx
-                  tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
-                  ./sfdx/install
-  - unless:
       condition: <<parameters.version>>
       steps:
         - run:
@@ -27,6 +17,18 @@ steps:
             command: |
               command -v npm >/dev/null 2>&1 || { echo >&2 "NPM not installed in the current environment.  Aborting."; exit 1; }
               npm install sfdx-cli@<<parameters.version>> --global
+  # unless version is _not_ defined.
+  - unless:
+      condition: <<parameters.version>>
+      steps:
+        - run:
+            name: Install SFDX - Standalone
+            command: |
+              cd /tmp
+              wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+              mkdir sfdx
+              tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
+              ./sfdx/install
   - run:
       name: Verify SFDX installation
       command: sfdx --version
