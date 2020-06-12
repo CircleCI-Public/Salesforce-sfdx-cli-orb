@@ -26,11 +26,11 @@ parameters:
     type: string
   decryption_iv:
     description: Enviornment variable name for server.key IV, if available.
-    default:
+    default: DECRYPTION_IV
     type: env_var_name
   decryption_key:
     description: Enviornment variable name for server.key decryption key, if available.
-    default:
+    default: DECRYPTION_KEY
     type: env_var_name
 steps:
   - run:
