@@ -24,9 +24,17 @@ parameters:
     description: The API version for a specific project or all projects. Normally, the Salesforce CLI assumes that you’re using the same version of the CLI as the Dev Hub org.
     default: ''
     type: string
+  decryption_iv:
+    description: Enviornment variable name for server.key IV, if available.
+    default:
+    type: env_var_name
+  decryption_key:
+    description: Enviornment variable name for server.key decryption key, if available.
+    default:
+    type: env_var_name
 steps:
   - run:
-      name: Authenticating with SFDX and configuring.
+      name: Check and install SFDC authentication key
       command: |
         if [ -z $<<parameters.jwtKey>> ]; then
           echo "Authentication requires a base64 encoded server key to be provided as an evironment variable. Please ensure the <<parameters.jwtKey>> env var has been set correctly."
@@ -43,6 +51,19 @@ steps:
           exit 1
         fi
         echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
+  - when:
+      condition:
+        and: [<< parameters.decryption_iv >> << parameters.decryption_key >>]
+      steps:
+        - run:
+            name: Decrypt SFDC authentication key.
+            command: |
+              mv server.key server.key.enc
+              openssl enc -d -aes-256-cbc -in server.key.enc -out server.key -K << parameters.decryption_key >> -iv << parameters.decryption_iv >>
+              rm server.key.enc
+  - run:
+      name: Authenticate with Salesforce
+      command: |
         <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>> --global<</parameters.instanceUrl>>
         sfdx force:auth:jwt:grant --clientid $<<parameters.consumerKey>> \
         --jwtkeyfile ./server.key --username <<parameters.defaultusername>> <<#parameters.instanceUrl>>--instanceurl <<parameters.instanceUrl>><</parameters.instanceUrl>> \
