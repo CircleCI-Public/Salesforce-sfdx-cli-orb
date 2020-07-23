@@ -1,10 +1,10 @@
 # Delete a scratch SFDX Org.
 description: >
-  'Delete a scratch Salesforce Org.'
+  "Delete a scratch Salesforce Org."
 parameters:
   scratch-alias:
-    description: 'The name of the scratch Org, can either be the alias or target username.'
-    default: ''
+    description: "The name of the scratch Org, can either be the alias or target username."
+    default: ""
     type: string
 
 steps:

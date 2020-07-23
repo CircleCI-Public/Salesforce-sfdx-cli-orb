@@ -1,28 +1,30 @@
 description: >
-  'Authenticate with and configure the SFDX CLI after installation. This orb utilizes JWT-based authentication. You will need to create a connected app and provide a base64 encoded server key for authentication. Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm'
+  Authenticate with and configure the SFDX CLI after installation.
+  This orb utilizes JWT-based authentication. You will need to create a connected app and provide a base64 encoded server key for authentication.
+  Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm
 parameters:
   defaultusername:
     description: The username for an org that all commands run against by default.
     type: string
   defaultdevhubusername:
     description: The username of your Dev Hub org that the force:org:create command defaults to. Used as alias.
-    default: '${CIRCLE_PROJECT_REPONAME}-${CIRCLE_BRANCH}'
+    default: "${CIRCLE_PROJECT_REPONAME}-${CIRCLE_BRANCH}"
     type: string
   jwtKey:
     description: Environment variable containing the base64 encoded private server key.
     default: SFDX_JWT_KEY
     type: env_var_name
   consumerKey:
-    description: 'The consumner key of the connected app for salesforce. Stored as an environment variable'
+    description: "The consumner key of the connected app for salesforce. Stored as an environment variable"
     default: SFDX_CONSUMER_KEY
     type: env_var_name
   instanceUrl:
     description: The URL of the Salesforce instance that is hosting your org.
-    default: ''
+    default: ""
     type: string
   apiVersion:
     description: The API version for a specific project or all projects. Normally, the Salesforce CLI assumes that you’re using the same version of the CLI as the Dev Hub org.
-    default: ''
+    default: ""
     type: string
   decryption_iv:
     description: Enviornment variable name for server.key IV, if available.
