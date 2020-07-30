@@ -34,35 +34,44 @@ parameters:
     description: Enviornment variable name for server.key decryption key, if available.
     default: DECRYPTION_KEY
     type: env_var_name
+  server_key:
+    description: Path to encrypted server.key within the project, if available.
+    default: ""
+    type: string
+
 steps:
-  - run:
-      name: Check and install SFDC authentication key
-      command: |
-        if [ -z $<<parameters.jwtKey>> ]; then
-          echo "Authentication requires a base64 encoded server key to be provided as an evironment variable. Please ensure the <<parameters.jwtKey>> env var has been set correctly."
-          exit 1
-        fi
-        if [ -z $<<parameters.consumerKey>> ]; then
-          echo "Authentication requires a consumer key to be present. Please ensure the <<parameters.consumerKey>> env var has been set correctly."
-          exit 1
-        fi
-        echo Creating jwt key file.
-        echo
-        if [ -f ./server.key ]; then
-          echo "It appears you may have commited your server.key file. For your safety please never commit secrets to your code repository. We instead recommend utilizing environment variables for this purpose. You may wish to invalidate and regenerate your server key."
-          exit 1
-        fi
-        echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
   - when:
       condition:
-        and: [<< parameters.decryption_iv >>, << parameters.decryption_key >>]
+        not: << parameters.server_key >>
+      steps:
+        - run:
+            name: Check and install SFDC authentication key
+            command: |
+              if [ -z $<<parameters.jwtKey>> ]; then
+                echo "Authentication requires a base64 encoded server key to be provided as an evironment variable. Please ensure the <<parameters.jwtKey>> env var has been set correctly."
+                exit 1
+              fi
+              if [ -z $<<parameters.consumerKey>> ]; then
+                echo "Authentication requires a consumer key to be present. Please ensure the <<parameters.consumerKey>> env var has been set correctly."
+                exit 1
+              fi
+              echo Creating jwt key file.
+              echo
+              if [ -f ./server.key ]; then
+                echo "It appears you may have commited your server.key file. For your safety please never commit secrets to your code repository. We instead recommend utilizing environment variables for this purpose. You may wish to invalidate and regenerate your server key."
+                exit 1
+              fi
+              echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
+
+  - when:
+      condition:
+        and: [<< parameters.decryption_iv >>, << parameters.decryption_key >>, << parameters.server_key >>]
       steps:
         - run:
             name: Decrypt SFDC authentication key.
             command: |
-              mv server.key server.key.enc
-              openssl enc -aes-256-cbc -md sha256 -salt -d -in server.key.enc -out server.key -K << parameters.decryption_key >> -iv << parameters.decryption_iv >> -pbkdf2
-              rm server.key.enc
+              openssl enc -aes-256-cbc -md sha256 -salt -d -in << parameters.server_key >> -out server.key -K << parameters.decryption_key >> -iv << parameters.decryption_iv >> -pbkdf2
+
   - run:
       name: Authenticate with Salesforce
       command: |
