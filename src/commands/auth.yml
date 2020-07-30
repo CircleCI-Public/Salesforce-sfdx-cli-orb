@@ -55,13 +55,13 @@ steps:
         echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
   - when:
       condition:
-        and: [<< parameters.decryption_iv >> << parameters.decryption_key >>]
+        and: [<< parameters.decryption_iv >>, << parameters.decryption_key >>]
       steps:
         - run:
             name: Decrypt SFDC authentication key.
             command: |
               mv server.key server.key.enc
-              openssl enc -d -aes-256-cbc -in server.key.enc -out server.key -K << parameters.decryption_key >> -iv << parameters.decryption_iv >>
+              openssl enc -aes-256-cbc -md sha256 -salt -d -in server.key.enc -out server.key -K << parameters.decryption_key >> -iv << parameters.decryption_iv >> -pbkdf2
               rm server.key.enc
   - run:
       name: Authenticate with Salesforce
