@@ -26,10 +26,6 @@ parameters:
     description: The API version for a specific project or all projects. Normally, the Salesforce CLI assumes that you’re using the same version of the CLI as the Dev Hub org.
     default: ""
     type: string
-  decryption_iv:
-    description: Enviornment variable name for server.key IV, if available.
-    default: DECRYPTION_IV
-    type: env_var_name
   decryption_key:
     description: Enviornment variable name for server.key decryption key, if available.
     default: DECRYPTION_KEY
@@ -65,12 +61,12 @@ steps:
 
   - when:
       condition:
-        and: [<< parameters.decryption_iv >>, << parameters.decryption_key >>, << parameters.server_key >>]
+        and: [<< parameters.decryption_key >>, << parameters.server_key >>]
       steps:
         - run:
             name: Decrypt SFDC authentication key.
             command: |
-              openssl enc -aes-256-cbc -md sha256 -salt -d -in << parameters.server_key >> -out server.key -K << parameters.decryption_key >> -iv << parameters.decryption_iv >> -pbkdf2
+              openssl enc -aes-256-cbc -md sha256 -salt -d -in << parameters.server_key >> -out server.key -K << parameters.decryption_key >> -pbkdf2
 
   - run:
       name: Authenticate with Salesforce
