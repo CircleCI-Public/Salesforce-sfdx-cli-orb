@@ -26,6 +26,14 @@ jobs:
       - sfdx/install:
           version: latest
 
+  integration-install_cli_npm_newer_node:
+    docker:
+      - image: cimg/node:14.7
+    working_directory: ~/project
+    steps:
+      - sfdx/install:
+          version: latest
+
   integration-install_authenticate:
     executor: sfdx/default
     working_directory: ~/project
@@ -96,6 +104,7 @@ workflows:
 
       - integration-install_cli_tar
       - integration-install_cli_npm
+      - integration-install_cli_npm_newer_node
       - integration-install_authenticate
       - integration-scratch_functions
 
@@ -118,6 +127,7 @@ workflows:
           requires:
             - integration-install_cli_tar
             - integration-install_cli_npm
+            - integration-install_cli_npm_newer_node
             - integration-install_authenticate
             - integration-scratch_functions
           filters:
