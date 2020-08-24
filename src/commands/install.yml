@@ -13,8 +13,6 @@ steps:
       condition: <<parameters.version>>
       steps:
         - run:
-            environment:
-              
             name: Install SFDX - NPM
             command: |
               echo 'export NPM_CONFIG_PREFIX=$HOME/.npm-global' >> $BASH_ENV
