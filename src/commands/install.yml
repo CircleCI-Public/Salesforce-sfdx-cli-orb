@@ -14,11 +14,13 @@ steps:
       steps:
         - run:
             environment:
-              NPM_CONFIG_PREFIX: ~/.npm-global
+              
             name: Install SFDX - NPM
             command: |
-              mkdir "$NPM_CONFIG_PREFIX"
+              echo 'export NPM_CONFIG_PREFIX=$HOME/.npm-global' >> $BASH_ENV
               source $BASH_ENV
+
+              mkdir -p "$NPM_CONFIG_PREFIX"
               npm install sfdx-cli@<<parameters.version>> --global
   # unless version is _not_ defined.
   - unless:
