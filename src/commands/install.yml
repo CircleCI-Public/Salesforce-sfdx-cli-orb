@@ -15,8 +15,9 @@ steps:
         - run:
             name: Install SFDX - NPM
             command: |
-              mkdir ~/.npmg
+              mkdir ~/.npm-global
               NPM_CONFIG_PREFIX=~/.npm-global
+              source $BASH_ENV
               npm install sfdx-cli@<<parameters.version>> --global
   # unless version is _not_ defined.
   - unless:
