@@ -20,7 +20,7 @@ steps:
               source $BASH_ENV
 
               mkdir -p "$HOME/.npm-global"
-              npm install sfdx-cli@<<parameters.version>> --global
+              npm install husky sfdx-cli@<<parameters.version>> --global
   # unless version is _not_ defined.
   - unless:
       condition: <<parameters.version>>
