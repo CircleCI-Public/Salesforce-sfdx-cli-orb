@@ -50,7 +50,8 @@ jobs:
     working_directory: ~/project
     steps:
       - checkout
-      - sfdx/install
+      - sfdx/install:
+          version: latest
       - sfdx/auth:
           defaultusername: gabriel@circleci.cpe
       - sfdx/scratch-create:
