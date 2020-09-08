@@ -15,12 +15,7 @@ steps:
         - run:
             name: Install SFDX - NPM
             command: |
-              npm config set prefix "$HOME/.npm-global"
-              echo 'export PATH=$HOME/.npm-global/bin:$PATH' >> $BASH_ENV
-              source $BASH_ENV
-
-              mkdir -p "$HOME/.npm-global"
-              npm install husky sfdx-cli@<<parameters.version>> --global
+              sudo npm install sfdx-cli@<<parameters.version>> --global
   # unless version is _not_ defined.
   - unless:
       condition: <<parameters.version>>
