@@ -43,7 +43,7 @@ jobs:
           defaultusername: gabriel@circleci.cpe
       - run:
           name: Check Auth List
-          command: sfdx force:auth:list
+          command: sfdx auth:list
 
   integration-scratch_functions:
     executor: sfdx/default
