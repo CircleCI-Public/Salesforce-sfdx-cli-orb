@@ -44,7 +44,7 @@ steps:
         fi
         echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
         <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>> --global<</parameters.instanceUrl>>
-        sfdx force:auth:jwt:grant --clientid $<<parameters.consumerKey>> \
+        sfdx auth:jwt:grant --clientid $<<parameters.consumerKey>> \
         --jwtkeyfile ./server.key --username <<parameters.defaultusername>> <<#parameters.instanceUrl>>--instanceurl <<parameters.instanceUrl>><</parameters.instanceUrl>> \
         --setdefaultdevhubusername --setalias <<parameters.defaultdevhubusername>>
         <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>

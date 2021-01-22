@@ -42,7 +42,7 @@ version: 2.1
             name: Run your SFDX commands here
             command: |
               echo "You now have access to the sfdx cli and may execute commands against it. https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm"
-              sfdx force:auth:list
+              sfdx auth:list
   workflows:
     basic-test:
       jobs:
