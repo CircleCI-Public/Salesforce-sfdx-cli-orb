@@ -1,10 +1,12 @@
 # How to author commands: https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
 description: >
-  'Install and configure the Salesforce "sfdx" cli utility giving access to the "sfdx" command. Set parameters to automatically set the sfdx config values. Also able to be set via environment variables. Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_config_values.htm'
+  Install and configure the Salesforce "sfdx" cli utility giving access to the "sfdx" command.
+  Set parameters to automatically set the sfdx config values. Also able to be set via environment variables.
+  Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_config_values.htm
 parameters:
   version:
-    description: 'By default, the latest version of the standalone CLI will be installed. To install via npm, supply a version tag such as "latest" or "6".'
-    default: ''
+    description: By default, the latest version of the standalone CLI will be installed. To install via npm, supply a version tag such as "latest" or "6".
+    default: ""
     type: string
 
 steps:
