@@ -17,9 +17,13 @@ steps:
         - run:
             name: Install SFDX - NPM
             command: |
-              if [[ $EUID == 0 ]]; then export SUDO=""; else export SUDO="sudo"; fi
-
               command -v npm >/dev/null 2>&1 || { echo >&2 "NPM not installed in the current environment. Aborting."; exit 1; }
+              if [[ $EUID == 0 ]]; then export SUDO=""; else # Check if we're root
+                if ! [[ -w $(npm root -g) ]]; then
+                  export SUDO="sudo";
+                fi
+              fi
+
               $SUDO npm install sfdx-cli@<<parameters.version>> --global
   # unless version is _not_ defined.
   - unless:
