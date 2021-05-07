@@ -5,7 +5,7 @@ docker:
   - image: "cimg/node:<<parameters.tag>>"
 parameters:
   tag:
-    default: "16.10"
+    default: "16.1"
     description: >
       Pick a specific circleci/node image variant:
       https://hub.docker.com/r/cimg/node
