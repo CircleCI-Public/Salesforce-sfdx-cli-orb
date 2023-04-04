@@ -10,4 +10,4 @@ parameters:
 steps:
   - run:
       name: Open <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>SalesForce Org in browser
-      command: sfdx force:org:open <<# parameters.scratch-alias >> -u << parameters.scratch-alias >><</ parameters.scratch-alias >>
+      command: sfdx org:open <<# parameters.scratch-alias >> -u << parameters.scratch-alias >><</ parameters.scratch-alias >>
