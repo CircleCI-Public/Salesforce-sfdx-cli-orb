@@ -71,8 +71,8 @@ steps:
   - run:
       name: Authenticate with Salesforce
       command: |
-        <<#parameters.instanceUrl>>sfdx force:config:set instanceUrl=<<parameters.instanceUrl>> --global<</parameters.instanceUrl>>
-        sfdx auth:jwt:grant --clientid $<<parameters.consumerKey>> \
-        --jwtkeyfile ./server.key --username <<parameters.defaultusername>> <<#parameters.instanceUrl>>--instanceurl <<parameters.instanceUrl>><</parameters.instanceUrl>> \
-        --setdefaultdevhubusername --setalias <<parameters.defaultdevhubusername>>
-        <<#parameters.apiVersion>>sfdx force:config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>
+        <<#parameters.instanceUrl>>sfdx config:set instanceUrl=<<parameters.instanceUrl>> --global<</parameters.instanceUrl>>
+        sfdx auth:jwt:grant --client-id $<<parameters.consumerKey>> \
+        --jwt-key-file ./server.key --username <<parameters.defaultusername>> <<#parameters.instanceUrl>>--instance-url <<parameters.instanceUrl>><</parameters.instanceUrl>> \
+        --set-default-dev-hub --alias <<parameters.defaultdevhubusername>>
+        <<#parameters.apiVersion>>sfdx config:set apiVersion=<<parameters.apiVersion>><</parameters.apiVersion>>
