@@ -1,4 +1,4 @@
-# Creates a scratch SFDX Org.
+# Creates a scratch Salesforce Org.
 description: >
   "Create a scratch Salesforce Org."
 parameters:
@@ -15,7 +15,7 @@ parameters:
 
 steps:
   - run:
-      name: Create << parameters.scratch-alias >> SalesForce Org
+      name: Create << parameters.scratch-alias >> Salesforce scratch org
       command: |
-       sfdx force:org:create -f << parameters.scratch-config >> -a << parameters.scratch-alias >> <<# parameters.overrides >> << parameters.overrides >> <</ parameters.overrides >>
-       sfdx force:org:list | grep << parameters.scratch-alias >>
+        sf org create scratch -f << parameters.scratch-config >> -a << parameters.scratch-alias >> <<# parameters.overrides >> << parameters.overrides >> <</ parameters.overrides >>
+        sf org list | grep << parameters.scratch-alias >>

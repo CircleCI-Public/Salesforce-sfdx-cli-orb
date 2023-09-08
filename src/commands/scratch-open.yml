@@ -9,5 +9,5 @@ parameters:
 
 steps:
   - run:
-      name: Open <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>SalesForce Org in browser
-      command: sfdx force:org:open <<# parameters.scratch-alias >> -u << parameters.scratch-alias >><</ parameters.scratch-alias >>
+      name: Open <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>Salesforce scratch org in browser
+      command: sf org open <<# parameters.scratch-alias >> --target-org << parameters.scratch-alias >><</ parameters.scratch-alias >>

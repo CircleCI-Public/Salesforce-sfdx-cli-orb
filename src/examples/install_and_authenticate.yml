@@ -1,5 +1,5 @@
 description: >
-  Simple example showing how to install the Salesforce sfdx CLI with the default options and authenticate against it with JWT.
+  Simple example showing how to install the Salesforce sf CLI with the default options and authenticate against it with JWT.
 usage:
   version: 2.1
   orbs:
@@ -13,10 +13,10 @@ usage:
         - sfdx/auth:
             defaultusername: user@email.com
         - run:
-            name: Run your SFDX commands here
+            name: Run your SF commands here
             command: |
-              echo You now have access to the sfdx cli and may execute commands against it.
-              sfdx auth:list
+              echo You now have access to the sf cli and may execute commands against it.
+              sf auth list
   workflows:
     basic-test:
       jobs:
