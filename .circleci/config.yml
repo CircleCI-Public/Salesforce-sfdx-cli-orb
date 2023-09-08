@@ -28,7 +28,7 @@ jobs:
 
   integration-install_cli_npm_newer_node:
     docker:
-      - image: cimg/node:14.7
+      - image: cimg/node:current
     working_directory: ~/project
     steps:
       - sfdx/install:
@@ -43,7 +43,7 @@ jobs:
           defaultusername: gabriel@circleci.cpe
       - run:
           name: Check Auth List
-          command: sfdx auth:list
+          command: sf auth list
 
   integration-scratch_functions:
     executor: sfdx/default

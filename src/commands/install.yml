@@ -1,11 +1,11 @@
 # How to author commands: https://circleci.com/docs/2.0/reusing-config/#authoring-reusable-commands
 description: >
-  Install and configure the Salesforce "sfdx" cli utility giving access to the "sfdx" command.
-  Set parameters to automatically set the sfdx config values. Also able to be set via environment variables.
-  Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_cli_config_values.htm
+  Install and configure the Salesforce "sf" cli utility giving access to the "sf" commands.
+  Set parameters to automatically set the sf config values. Also able to be set via environment variables.
+  Learn more: https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm
 parameters:
   version:
-    description: By default, the latest version of the standalone CLI will be installed. To install via npm, supply a version tag such as "latest" or "6".
+    description: By default, the latest version of the standalone CLI will be installed. To install via npm, supply a version tag such as "latest", "latest-rc", "nightly", "2.1.1", etc.
     default: ""
     type: string
 
@@ -15,7 +15,7 @@ steps:
       condition: <<parameters.version>>
       steps:
         - run:
-            name: Install SFDX - NPM
+            name: Install SF - NPM
             command: |
               command -v npm >/dev/null 2>&1 || { echo >&2 "NPM not installed in the current environment. Aborting."; exit 1; }
               if [[ $EUID == 0 ]]; then export SUDO=""; else # Check if we're root
@@ -24,19 +24,19 @@ steps:
                 fi
               fi
 
-              $SUDO npm install sfdx-cli@<<parameters.version>> --global
+              $SUDO npm install @salesforce/cli@<<parameters.version>> --global
   # unless version is _not_ defined.
   - unless:
       condition: <<parameters.version>>
       steps:
         - run:
-            name: Install SFDX - Standalone
+            name: Install SF - Standalone
             command: |
               cd /tmp
-              wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-              mkdir sfdx
-              tar xJf sfdx-linux-amd64.tar.xz -C sfdx --strip-components 1
-              ./sfdx/install
+              wget https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
+              mkdir sf
+              tar xJf sf-linux-x64.tar.xz -C sf --strip-components 1
+              echo 'export PATH=/tmp/sf/bin:$PATH' >> "$BASH_ENV"
   - run:
-      name: Verify SFDX installation
-      command: sfdx --version
+      name: Verify SF installation
+      command: sf --version
