@@ -1,11 +1,8 @@
 version: 2.1
 orbs:
-  # Your orb will be automatically injected here during the pipeline.
-  # Reference your orb's jobs and commands below as they will exist when built.
+  salesforce-sfdx-cli: {}
   orb-tools: circleci/orb-tools@12.1
-  # The orb definition is intentionally not included here. It will be injected into the pipeline.
-  <orb-name>: {}
-
+  
 # Use this tag to ensure test jobs always run,
 # even though the downstream publish job will only run on release tags.
 filters: &filters
@@ -20,15 +17,13 @@ release-filters: &release-filters
     only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
 
 jobs:
-  # Create jobs to test the commands of your orbs.
-  # You may want to add additional validation steps to ensure the commands are working as expected.
   command-test:
     docker:
       - image: cimg/base:current
     steps:
       - checkout
-      # Run your orb's commands to validate them.
-      - <orb-name>/greet
+      - salesforce-sfdx-cli/auth
+
 workflows:
   test-deploy:
     jobs:
@@ -40,12 +35,12 @@ workflows:
       - orb-tools/pack:
           filters: *release-filters
       - orb-tools/publish:
-          orb_name: <namespace>/<orb-name>
+          orb_name: circleci/salesforce-sfdx-cli
           vcs_type: << pipeline.project.type >>
           pub_type: production
           # Ensure this job requires all test jobs and the pack job.
           requires:
             - orb-tools/pack
             - command-test
-          context: <publishing-context>
+          context: orb-publisher
           filters: *release-filters
