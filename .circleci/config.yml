@@ -16,8 +16,7 @@ workflows:
       - orb-tools/pack:
           filters: *filters
       - orb-tools/review:
-          #orb_name: <orb-name>
-          exclude: RC010
+          orb_name: circleci/salesforce-sfdx
           filters: *filters
       - shellcheck/check:
           filters: *filters
