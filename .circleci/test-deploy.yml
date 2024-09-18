@@ -24,7 +24,7 @@ jobs:
     executor: salesforce-sfdx-cli/default
     working_directory: ~/project
     steps:
-      - salesforce-sfdx-cli/install:
+      - install:
           version: latest
 
   integration-install_cli_npm_newer_node:
