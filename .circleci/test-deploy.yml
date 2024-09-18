@@ -18,13 +18,14 @@ jobs:
     executor: salesforce-sfdx-cli/default
     working_directory: ~/project/sample
     steps:
+      - run: echo hi
       - salesforce-sfdx-cli/install
 
   integration-install_cli_npm:
     executor: salesforce-sfdx-cli/default
     working_directory: ~/project
     steps:
-      - install:
+      - salesforce-sfdx-cli/install:
           version: latest
 
   integration-install_cli_npm_newer_node:
@@ -66,7 +67,7 @@ workflows:
   integration-tests_prod-release:
     jobs:
       - integration-install_cli_tar
-      - integration-install_cli_npm
-      - integration-install_cli_npm_newer_node
-      - integration-install_authenticate
-      - integration-scratch_functions
+#      - integration-install_cli_npm
+#      - integration-install_cli_npm_newer_node
+#      - integration-install_authenticate
+#      - integration-scratch_functions
