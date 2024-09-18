@@ -2,14 +2,14 @@
 description: >
   "Delete a scratch Salesforce Org."
 parameters:
-  scratch-alias:
+  scratch_alias:
     description: "The name of the scratch Org, can either be the alias or target username."
     default: ""
     type: string
 
 steps:
   - run:
-      name: Delete <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>Salesforce scratch org
+      name: Delete <<# parameters.scratch_alias >><< parameters.scratch_alias >> <</ parameters.scratch_alias >>Salesforce scratch org
       environment:
-        SCRATCH_ALIAS: << parameters.scratch-alias >>
+        SCRATCH_ALIAS: << parameters.scratch_alias >>
       command: <<include(scripts/scratch_delete.sh)>>
