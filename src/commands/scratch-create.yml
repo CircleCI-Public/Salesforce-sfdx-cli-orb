@@ -20,4 +20,4 @@ steps:
         SCRATCH_CONFIG: << parameters.scratch-config >>
         SCRATCH_ALIAS: << parameters.scratch-alias >>
         SCRATCH_OVERRIDES: << parameters.overrides >>
-      command: <<include(scripts/scratch-create.sh)>>
+      command: <<include(scripts/scratch_create.sh)>>

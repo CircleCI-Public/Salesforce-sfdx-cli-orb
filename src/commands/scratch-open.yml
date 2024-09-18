@@ -12,4 +12,4 @@ steps:
       name: Open <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>Salesforce scratch org in browser
       environment:
         SCRATCH_ALIAS: << parameters.scratch-alias >>
-      command: <<include(scripts/scratch-open.sh)>>
+      command: <<include(scripts/scratch_open.sh)>>

@@ -12,4 +12,4 @@ steps:
       name: Delete <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>Salesforce scratch org
       environment:
         SCRATCH_ALIAS: << parameters.scratch-alias >>
-      command: <<include(scripts/scratch-delete.sh)>>
+      command: <<include(scripts/scratch_delete.sh)>>
