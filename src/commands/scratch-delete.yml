@@ -10,5 +10,6 @@ parameters:
 steps:
   - run:
       name: Delete <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>Salesforce scratch org
-      command: sf org delete scratch --no-prompt <<# parameters.scratch-alias >> --target-org << parameters.scratch-alias >><</ parameters.scratch-alias >>
-      when: always
+      environment:
+        SCRATCH_ALIAS: << parameters.scratch-alias >>
+      command: <<include(scripts/scratch-delete.sh)>>
