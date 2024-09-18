@@ -19,7 +19,7 @@ jobs:
     working_directory: ~/project/sample
     steps:
       - run: echo hi
-      - salesforce-sfdx-cli/install
+#      - salesforce-sfdx-cli/install
 
   integration-install_cli_npm:
     executor: salesforce-sfdx-cli/default
