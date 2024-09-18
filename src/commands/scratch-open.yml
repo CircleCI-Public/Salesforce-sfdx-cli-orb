@@ -10,4 +10,6 @@ parameters:
 steps:
   - run:
       name: Open <<# parameters.scratch-alias >><< parameters.scratch-alias >> <</ parameters.scratch-alias >>Salesforce scratch org in browser
-      command: sf org open <<# parameters.scratch-alias >> --target-org << parameters.scratch-alias >><</ parameters.scratch-alias >>
+      environment:
+        SCRATCH_ALIAS: << parameters.scratch-alias >>
+      command: <<include(scripts/scratch-open.sh)>>
