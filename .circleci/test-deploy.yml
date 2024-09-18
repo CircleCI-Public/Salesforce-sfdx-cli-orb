@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  salesforce-sfdx-cli: {}
+  sf: {}
   orb-tools: circleci/orb-tools@12.1
 
 filters: &filters
@@ -15,7 +15,7 @@ release-filters: &release-filters
 
 jobs:
   integration-install_cli_tar:
-    executor: salesforce-sfdx-cli/default
+    executor: sf/default
     working_directory: ~/project/sample
     steps:
       - run: echo hi
