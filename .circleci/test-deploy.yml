@@ -54,13 +54,13 @@ jobs:
       - salesforce-sfdx-cli/install
       - salesforce-sfdx-cli/auth:
           defaultusername: gabriel@circleci.cpe
-      - salesforce-sfdx-cli/scratch-create:
-          scratch-config: "./sample/scratch-def.json"
-          scratch-alias: "circleci"
-      - salesforce-sfdx-cli/scratch-open:
-          scratch-alias: "circleci"
-      - salesforce-sfdx-cli/scratch-delete:
-          scratch-alias: "circleci"
+      - salesforce-sfdx-cli/scratch_create:
+          scratch_config: "./sample/scratch-def.json"
+          scratch_alias: "circleci"
+      - salesforce-sfdx-cli/scratch_open:
+          scratch_alias: "circleci"
+      - salesforce-sfdx-cli/scratch_delete:
+          scratch_alias: "circleci"
 
 workflows:
   integration-tests_prod-release:
