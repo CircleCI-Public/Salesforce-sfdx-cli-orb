@@ -2,14 +2,11 @@ version: 2.1
 orbs:
   salesforce-sfdx-cli: {}
   orb-tools: circleci/orb-tools@12.1
-  
-# Use this tag to ensure test jobs always run,
-# even though the downstream publish job will only run on release tags.
+
 filters: &filters
   tags:
     only: /.*/
 
-# Filter for release tags.
 release-filters: &release-filters
   branches:
     ignore: /.*/
@@ -17,30 +14,59 @@ release-filters: &release-filters
     only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
 
 jobs:
-  command-test:
+  integration-install_cli_tar:
+    executor: salesforce-sfdx-cli/default
+    working_directory: ~/project/sample
+    steps:
+      - salesforce-sfdx-cli/install
+
+  integration-install_cli_npm:
+    executor: salesforce-sfdx-cli/default
+    working_directory: ~/project
+    steps:
+      - salesforce-sfdx-cli/install:
+          version: latest
+
+  integration-install_cli_npm_newer_node:
     docker:
-      - image: cimg/base:current
+      - image: cimg/node:current
+    working_directory: ~/project
+    steps:
+      - salesforce-sfdx-cli/install:
+          version: latest
+
+  integration-install_authenticate:
+    executor: salesforce-sfdx-cli/default
+    working_directory: ~/project
+    steps:
+      - salesforce-sfdx-cli/install
+      - salesforce-sfdx-cli/auth:
+          defaultusername: gabriel@circleci.cpe
+      - run:
+          name: Check Auth List
+          command: sf auth list
+
+  integration-scratch_functions:
+    executor: salesforce-sfdx-cli/default
+    working_directory: ~/project
     steps:
       - checkout
-      - salesforce-sfdx-cli/auth
+      - salesforce-sfdx-cli/install
+      - salesforce-sfdx-cli/auth:
+          defaultusername: gabriel@circleci.cpe
+      - salesforce-sfdx-cli/scratch-create:
+          scratch-config: "./sample/scratch-def.json"
+          scratch-alias: "circleci"
+      - salesforce-sfdx-cli/scratch-open:
+          scratch-alias: "circleci"
+      - salesforce-sfdx-cli/scratch-delete:
+          scratch-alias: "circleci"
 
 workflows:
-  test-deploy:
+  integration-tests_prod-release:
     jobs:
-      # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
-      # Test your orb's commands in a custom job and test your orb's jobs directly as a part of this workflow.
-      - command-test:
-          filters: *filters
-      # The orb must be re-packed for publishing, and saved to the workspace.
-      - orb-tools/pack:
-          filters: *release-filters
-      - orb-tools/publish:
-          orb_name: circleci/salesforce-sfdx-cli
-          vcs_type: << pipeline.project.type >>
-          pub_type: production
-          # Ensure this job requires all test jobs and the pack job.
-          requires:
-            - orb-tools/pack
-            - command-test
-          context: orb-publisher
-          filters: *release-filters
+      - integration-install_cli_tar
+      - integration-install_cli_npm
+      - integration-install_cli_npm_newer_node
+      - integration-install_authenticate
+      - integration-scratch_functions
