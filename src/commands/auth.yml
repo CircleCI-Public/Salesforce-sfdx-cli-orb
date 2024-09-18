@@ -76,7 +76,7 @@ steps:
         DEFAULT_USERNAME: <<parameters.defaultusername>>
         DEFAULT_DEVHUB_USERNAME: <<parameters.defaultdevhubusername>>
         API_VERSION: <<parameters.apiVersion>>
-      command: 
+      command: |
         sf config set org-instance-url=${INSTANCE_URL} --global
         sf auth jwt grant \
         --client-id ${CONSUMER_KEY} \
