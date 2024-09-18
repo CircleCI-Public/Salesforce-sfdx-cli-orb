@@ -16,6 +16,8 @@ parameters:
 steps:
   - run:
       name: Create << parameters.scratch-alias >> Salesforce scratch org
-      command: |
-        sf org create scratch -f << parameters.scratch-config >> -a << parameters.scratch-alias >> <<# parameters.overrides >> << parameters.overrides >> <</ parameters.overrides >>
-        sf org list | grep << parameters.scratch-alias >>
+      environment:
+        SCRATCH_CONFIG: << parameters.scratch-config >>
+        SCRATCH_ALIAS: << parameters.scratch-alias >>
+        SCRATCH_OVERRIDES: << parameters.overrides >>
+      command: <<include(scripts/scratch-create.sh)>>
