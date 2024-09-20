@@ -12,13 +12,13 @@ usage:
         - sfdx/install
         - sfdx/auth:
             defaultusername: user@email.com
-        - sfdx/scratch-create:
-            scratch-config: "./config/project-scratch-def.json"
-            scratch-alias: "circleci"
-        - sfdx/scratch-open:
-            scratch-alias: "circleci"
-        - sfdx/scratch-delete:
-            scratch-alias: "circleci"
+        - sfdx/scratch_create:
+            scratch_config: "./config/project-scratch-def.json"
+            scratch_alias: "circleci"
+        - sfdx/scratch_open:
+            scratch_alias: "circleci"
+        - sfdx/scratch_delete:
+            scratch_alias: "circleci"
 
   workflows:
     basic-test:
