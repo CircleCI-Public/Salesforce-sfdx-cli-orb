@@ -8,5 +8,5 @@ parameters:
     default: "lts"
     description: >
       Pick a specific circleci/node image variant:
-      https://hub.docker.com/r/cimg/node/node/tags
+      https://hub.docker.com/r/cimg/node/tags
     type: string
