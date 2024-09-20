@@ -1,0 +1,72 @@
+version: 2.1
+orbs:
+  salesforce-sfdx-cli: {}
+  orb-tools: circleci/orb-tools@12.1
+
+filters: &filters
+  tags:
+    only: /.*/
+
+release-filters: &release-filters
+  branches:
+    ignore: /.*/
+  tags:
+    only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+
+jobs:
+  integration-install_cli_tar:
+    executor: salesforce-sfdx-cli/default
+    working_directory: ~/project/sample
+    steps:
+      - salesforce-sfdx-cli/install
+
+  integration-install_cli_npm:
+    executor: salesforce-sfdx-cli/default
+    working_directory: ~/project
+    steps:
+      - salesforce-sfdx-cli/install:
+          version: latest
+
+  integration-install_cli_npm_newer_node:
+    docker:
+      - image: cimg/node:current
+    working_directory: ~/project
+    steps:
+      - salesforce-sfdx-cli/install:
+          version: latest
+
+  integration-install_authenticate:
+    executor: salesforce-sfdx-cli/default
+    working_directory: ~/project
+    steps:
+      - salesforce-sfdx-cli/install
+      - salesforce-sfdx-cli/auth:
+          defaultusername: gabriel@circleci.cpe
+      - run:
+          name: Check Auth List
+          command: sf auth list
+
+  integration-scratch_functions:
+    executor: salesforce-sfdx-cli/default
+    working_directory: ~/project
+    steps:
+      - checkout
+      - salesforce-sfdx-cli/install
+      - salesforce-sfdx-cli/auth:
+          defaultusername: gabriel@circleci.cpe
+      - salesforce-sfdx-cli/scratch_create:
+          scratch_config: "./sample/scratch-def.json"
+          scratch_alias: "circleci"
+      - salesforce-sfdx-cli/scratch_open:
+          scratch_alias: "circleci"
+      - salesforce-sfdx-cli/scratch_delete:
+          scratch_alias: "circleci"
+
+workflows:
+  integration-tests_prod-release:
+    jobs:
+      - integration-install_cli_tar
+      - integration-install_cli_npm
+      - integration-install_cli_npm_newer_node
+      #- integration-install_authenticate
+      #- integration-scratch_functions

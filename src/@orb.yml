@@ -5,3 +5,4 @@ description: >
 
 display:
   home_url: https://github.com/CircleCI-Public/Salesforce-sfdx-cli-orb
+  source_url: "https://github.com/CircleCI-Public/Salesforce-sfdx-cli-orb"

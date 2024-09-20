@@ -1,0 +1,23 @@
+# Creates a scratch Salesforce Org.
+description: >
+  "Create a scratch Salesforce Org."
+parameters:
+  scratch_config:
+    description: "The scratch JSON definition."
+    type: string
+  scratch_alias:
+    description: "The alias of the scratch Org."
+    type: string
+  overrides:
+    description: "Overrides for scratch organization."
+    type: string
+    default: ""
+
+steps:
+  - run:
+      name: Create << parameters.scratch_alias >> Salesforce scratch org
+      environment:
+        SCRATCH_CONFIG: << parameters.scratch_config >>
+        SCRATCH_ALIAS: << parameters.scratch_alias >>
+        SCRATCH_OVERRIDES: << parameters.overrides >>
+      command: <<include(scripts/scratch_create.sh)>>

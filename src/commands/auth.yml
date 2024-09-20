@@ -70,13 +70,10 @@ steps:
 
   - run:
       name: Authenticate with Salesforce
-      command: |
-        <<#parameters.instanceUrl>>sf config set org-instance-url=<<parameters.instanceUrl>> --global<</parameters.instanceUrl>>
-        sf auth jwt grant \
-        --client-id $<<parameters.consumerKey>> \
-        --jwt-key-file ./server.key \
-        --username <<parameters.defaultusername>> \
-        <<#parameters.instanceUrl>>--instance-url <<parameters.instanceUrl>><</parameters.instanceUrl>> \
-        --set-default-dev-hub \
-        --alias <<parameters.defaultdevhubusername>>
-        <<#parameters.apiVersion>>sf config set org-api-version=<<parameters.apiVersion>><</parameters.apiVersion>>
+      environment:
+        INSTANCE_URL: <<parameters.instanceUrl>>
+        CONSUMER_KEY: <<parameters.consumerKey>>
+        DEFAULT_USERNAME: <<parameters.defaultusername>>
+        DEFAULT_DEVHUB_USERNAME: <<parameters.defaultdevhubusername>>
+        API_VERSION: <<parameters.apiVersion>>
+      command: <<include(scripts/auth.sh)>>
