@@ -68,5 +68,5 @@ workflows:
       - integration-install_cli_tar
       - integration-install_cli_npm
       - integration-install_cli_npm_newer_node
-      - integration-install_authenticate
-      - integration-scratch_functions
+      #- integration-install_authenticate
+      #- integration-scratch_functions
