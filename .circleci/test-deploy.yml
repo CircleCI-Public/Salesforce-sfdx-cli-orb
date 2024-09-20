@@ -70,3 +70,17 @@ workflows:
       - integration-install_cli_npm_newer_node
       #- integration-install_authenticate
       #- integration-scratch_functions
+      - orb-tools/pack:
+          filters: *release-filters
+      - orb-tools/publish:
+          orb_name: circleci/salesforce-sfdx
+          vcs_type: << pipeline.project.type >>
+          pub_type: production
+          github_token: GHI_TOKEN
+          requires:
+            - orb-tools/pack
+            - integration-install_cli_tar
+            - integration-install_cli_npm
+            - integration-install_cli_npm_newer_node
+          context: orb-publisher
+          filters: *release-filters
