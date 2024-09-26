@@ -57,7 +57,7 @@ steps:
                 echo "It appears you may have committed your server.key file. For your safety please never commit secrets to your code repository. We instead recommend utilizing environment variables for this purpose. You may wish to invalidate and regenerate your server key."
                 exit 1
               fi
-              echo $<<parameters.jwtKey>> | base64 --decode --ignore-garbage > ./server.key
+              echo $<<parameters.jwtKey>> | base64 --decode > ./server.key
 
   - when:
       condition:
