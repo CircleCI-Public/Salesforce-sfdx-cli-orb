@@ -7,7 +7,7 @@ sf auth jwt grant \
     --username "${DEFAULT_USERNAME}" \
     --instance-url "${INSTANCE_URL}" \
     --set-default-dev-hub \
-    --alias "$(echo "${DEFAULT_DEVHUB_USERNAME}" | envsubst)"
+    --alias "$(echo "${DEFAULT_DEVHUB_USERNAME}" | circleci env subst)"
 if [ -z "${API_VERSION}" ]; then
   echo 'No API version set: leaving as default'
 else
